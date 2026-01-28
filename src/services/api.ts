@@ -49,11 +49,45 @@ const api = {
         return [];
     },
 
-    loginUser: async (credentials: any) => {
-        if (MOCK_MODE) {
-            return { success: true, token: 'mock-token' };
-        }
-        return {};
+    loginUser: async (credentials: { id: string; pass: string }) => {
+        // SIMULATED API CALL
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (credentials.id === "admin" && credentials.pass === "admin") {
+                    resolve({
+                        success: true,
+                        token: "mock-admin-token-12345",
+                        user: { name: "Administrator", role: "admin" }
+                    });
+                } else if (credentials.id === "s1" && credentials.pass === "pass") {
+                    resolve({
+                        success: true,
+                        token: "mock-student-token-67890",
+                        user: { name: "Student One", role: "student" }
+                    });
+                } else {
+                    reject(new Error("Invalid credentials"));
+                }
+            }, 1000); // 1s delay
+        });
+    },
+
+    forgotPassword: async (id: string) => {
+        console.log("Forgot password for:", id);
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // Mock database check
+                const validIds = ["admin", "s1"];
+                if (validIds.includes(id)) {
+                    resolve({
+                        success: true,
+                        message: `Recovery email sent to registered email for ${id}.`
+                    });
+                } else {
+                    reject(new Error("ID not found in our records."));
+                }
+            }, 1500);
+        });
     },
 
     registerCompany: async (data: { name: string; org: string; email: string }) => {
