@@ -49,6 +49,65 @@ const api = {
         return [];
     },
 
+    getStudents: async () => {
+        if (MOCK_MODE) {
+            await new Promise((resolve) => setTimeout(resolve, 800)); // Simulate delay
+            return [
+                {
+                    id: 's1',
+                    name: "Rahul Sharma",
+                    rollNo: "NFSU/2024/001",
+                    branch: "Cyber Security",
+                    cgpa: 8.5,
+                    status: "Placed",
+                    resume: "#",
+                    backlogs: 0
+                },
+                {
+                    id: 's2',
+                    name: "Anjali Gupta",
+                    rollNo: "NFSU/2024/002",
+                    branch: "Digital Forensics",
+                    cgpa: 7.2,
+                    status: "Unplaced",
+                    resume: "#",
+                    backlogs: 1
+                },
+                {
+                    id: 's3',
+                    name: "Vikram Singh",
+                    rollNo: "NFSU/2024/003",
+                    branch: "Homeland Security",
+                    cgpa: 6.8,
+                    status: "Unplaced",
+                    resume: "#",
+                    backlogs: 0
+                },
+                {
+                    id: 's4',
+                    name: "Sneha Patel",
+                    rollNo: "NFSU/2024/004",
+                    branch: "Cyber Security",
+                    cgpa: 9.1,
+                    status: "Placed",
+                    resume: "#",
+                    backlogs: 0
+                },
+                {
+                    id: 's5',
+                    name: "Arjun Reddy",
+                    rollNo: "NFSU/2024/005",
+                    branch: "Digital Forensics",
+                    cgpa: 5.5,
+                    status: "Blocked",
+                    resume: "#",
+                    backlogs: 2
+                }
+            ];
+        }
+        return [];
+    },
+
     loginUser: async (credentials: { id: string; pass: string }) => {
         // SIMULATED API CALL
         return new Promise((resolve, reject) => {
