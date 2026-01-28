@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Mail, Phone, ChevronDown } from 'lucide-react';
 
 const Header = () => {
@@ -47,9 +48,9 @@ const Header = () => {
                     <a href="https://dharwad.nfsu.ac.in/department/list/9" className="hover:text-gray-300 transition-colors">SCHOOLS</a>
 
                     {/* Login Button (Pill Shaped) */}
-                    <button className="bg-white text-[#002147] px-5 py-1 rounded-full font-bold hover:bg-gray-200 hover:scale-105 transition-all duration-200 shadow-sm">
+                    <Link href="/login" className="bg-white text-[#002147] px-5 py-1 rounded-full font-bold hover:bg-gray-200 hover:scale-105 transition-all duration-200 shadow-sm flex items-center justify-center">
                         LOGIN
-                    </button>
+                    </Link>
                 </div>
             </div>
 
