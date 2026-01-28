@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+
+
+@theme {
+  --color-nfsu-primary: #002147;
+  --color-nfsu-accent: #ddb55e;
+  --color-nfsu-bg-light: #f3ebdf;
+  --color-nfsu-text-main: #333333;
+  --color-nfsu-text-inv: #ffffff;
+
+  --color-cyber-bg: #020c1b;
+  --color-cyber-text: #00ff41;
+  --color-cyber-radar: #00b3cc;
+  --color-cyber-highlight: #ffff00;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --animate-scroll: scroll 30s linear infinite;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* NFSU Identity */
+  --nfsu-primary: #002147;
+  /* Oxford Blue */
+  --nfsu-accent: #ddb55e;
+  /* Golden Yellow */
+  --nfsu-bg-light: #f3ebdf;
+  /* Platinum Blonde */
+  --nfsu-text-main: #333333;
+  /* Dark Grey */
+  --nfsu-text-inv: #ffffff;
+  /* White */
+
+  /* Cyber Theme (Hero) */
+  --cyber-bg: #020c1b;
+  /* Deep Navy */
+  --cyber-text: #00ff41;
+  /* Terminal Green */
+  --cyber-radar: #00b3cc;
+  /* Teal Blue */
+  --cyber-highlight: #ffff00;
+  /* Neon Yellow */
+
+  --font-geist-sans: "Arial", sans-serif;
+  /* Fallback until fonts load */
+  --font-geist-mono: "Courier New", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
