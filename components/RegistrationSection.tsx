@@ -1,12 +1,47 @@
 'use client';
 
 import React, { useState } from 'react';
-import { CheckCircle2, User, Building2, Mail, ArrowRight } from 'lucide-react';
+import { CheckCircle2, User, Building2, Mail, ArrowRight, Loader2 } from 'lucide-react';
 import clsx from 'clsx';
+import api from '@/src/services/api';
 
 export default function RegistrationSection() {
     // State for focus management
     const [focusedInput, setFocusedInput] = useState<string | null>(null);
+
+    // Form State
+    const [formData, setFormData] = useState({
+        name: '',
+        org: '',
+        email: ''
+    });
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [message, setMessage] = useState('');
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setStatus('loading');
+        setMessage('');
+
+        try {
+            const response = await api.registerCompany(formData);
+            if (response.success) {
+                setStatus('success');
+                setMessage(response.message || 'Registration successful!');
+                setFormData({ name: '', org: '', email: '' }); // Reset form
+            } else {
+                setStatus('error');
+                setMessage(response.message || 'Registration failed.');
+            }
+        } catch (error) {
+            setStatus('error');
+            setMessage('An unexpected error occurred.');
+        }
+    };
 
     return (
         <section className="relative w-full py-20 md:py-32 overflow-hidden flex items-center justify-center">
@@ -51,13 +86,17 @@ export default function RegistrationSection() {
 
                 {/* Right Side (The Form) */}
                 <div className="w-full md:w-1/2 bg-white/5 p-8 md:p-12 lg:p-16 flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/10">
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         {/* Name Input */}
                         <div className="relative group">
                             <User className={clsx("absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300", focusedInput === 'name' ? 'text-[#ddb55e]' : 'text-gray-400')} size={18} />
                             <input
                                 type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
                                 placeholder="Your Name"
+                                required
                                 className={clsx(
                                     "w-full bg-transparent border rounded-lg py-4 pl-12 pr-4 text-white placeholder-gray-400 outline-none transition-all duration-300",
                                     focusedInput === 'name' ? 'border-[#ddb55e] bg-white/20' : 'border-white/20 hover:border-white/40'
@@ -72,7 +111,11 @@ export default function RegistrationSection() {
                             <Building2 className={clsx("absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300", focusedInput === 'org' ? 'text-[#ddb55e]' : 'text-gray-400')} size={18} />
                             <input
                                 type="text"
+                                name="org"
+                                value={formData.org}
+                                onChange={handleChange}
                                 placeholder="Organization Name"
+                                required
                                 className={clsx(
                                     "w-full bg-transparent border rounded-lg py-4 pl-12 pr-4 text-white placeholder-gray-400 outline-none transition-all duration-300",
                                     focusedInput === 'org' ? 'border-[#ddb55e] bg-white/20' : 'border-white/20 hover:border-white/40'
@@ -87,7 +130,11 @@ export default function RegistrationSection() {
                             <Mail className={clsx("absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300", focusedInput === 'email' ? 'text-[#ddb55e]' : 'text-gray-400')} size={18} />
                             <input
                                 type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
                                 placeholder="Official Email Address"
+                                required
                                 className={clsx(
                                     "w-full bg-transparent border rounded-lg py-4 pl-12 pr-4 text-white placeholder-gray-400 outline-none transition-all duration-300",
                                     focusedInput === 'email' ? 'border-[#ddb55e] bg-white/20' : 'border-white/20 hover:border-white/40'
@@ -97,13 +144,35 @@ export default function RegistrationSection() {
                             />
                         </div>
 
+                        {/* Status Message */}
+                        {status === 'success' && (
+                            <div className="text-green-400 text-sm font-semibold text-center bg-green-400/10 py-2 rounded">
+                                {message}
+                            </div>
+                        )}
+                        {status === 'error' && (
+                            <div className="text-red-400 text-sm font-semibold text-center bg-red-400/10 py-2 rounded">
+                                {message}
+                            </div>
+                        )}
+
                         {/* CTA Button */}
                         <button
-                            type="button"
-                            className="w-full bg-[#ddb55e] text-[#002147] font-bold py-4 rounded-lg flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-transform duration-300 shadow-lg mt-4"
+                            type="submit"
+                            disabled={status === 'loading'}
+                            className="w-full bg-[#ddb55e] text-[#002147] font-bold py-4 rounded-lg flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-transform duration-300 shadow-lg mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
-                            Register Interest
-                            <ArrowRight size={20} />
+                            {status === 'loading' ? (
+                                <>
+                                    <Loader2 className="animate-spin" size={20} />
+                                    Processing...
+                                </>
+                            ) : (
+                                <>
+                                    Register Interest
+                                    <ArrowRight size={20} />
+                                </>
+                            )}
                         </button>
                     </form>
                 </div>

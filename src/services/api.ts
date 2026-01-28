@@ -98,6 +98,7 @@ const api = {
         }
         // Real API call would go here
         // return axios.post(`${API_URL}/register`, data);
+        console.log("Registering company:", data);
         return { success: false, message: "API not connected" };
     }
 };
